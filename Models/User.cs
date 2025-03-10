@@ -1,4 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
 namespace AirbnbREST.Models;
 
 public class User
@@ -22,11 +25,16 @@ public class User
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email format")]
     public string Email { get; set; }
+    
+    // Password Hash (prevent to store raw passwords)
+    [Required(ErrorMessage = "Password is required")]
+    public string PasswordHash { get; set; }
         
     public string? ProfilePicLink { get; set; }
     
     public string? Bio { get; set; }
-        
-    [Required(ErrorMessage = "User role is required")]
+    
+    [Required(ErrorMessage = "User role is required")]   
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public UserRole Role { get; set; }
 }

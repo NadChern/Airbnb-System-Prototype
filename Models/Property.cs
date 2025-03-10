@@ -46,5 +46,5 @@ public class Property
     [Required(ErrorMessage = "ZIP code is required")]
     public string ZipCode { get; set; }
         
-    public List<string>? Photos { get; set; }
+    public List<PropertyPhoto>? Photos { get; set; }
 }

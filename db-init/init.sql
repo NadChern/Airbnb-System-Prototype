@@ -1,13 +1,15 @@
 CREATE TABLE users (
-	id SERIAL PRIMARY KEY,
+	id UUID PRIMARY KEY,
 	created_at timestamp NOT NULL DEFAULT NOW(),
 	first_name text NOT NULL,
 	middle_name text,
 	last_name text NOT NULL,
 	phone text,
 	email text NOT NULL,
+    password_hash text NOT NULL,
+    profile_pic_link text, 
 	bio text,
-	role text NOT NULL CHECK (role IN ('GUEST', 'HOST'))
+	role text NOT NULL CHECK (role IN ('Guest', 'Host'))
 );
 
 CREATE TABLE properties (
