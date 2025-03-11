@@ -30,6 +30,14 @@ CREATE TABLE properties (
 	zip_code CHAR(5) NOT NULL
 );
 
+CREATE TABLE property_photos (
+	id uuid PRIMARY KEY,
+	property_id uuid NOT NULL REFERENCES properties(id)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE,
+	photo_link text NOT NULL
+);
+
 CREATE TABLE availabilities (
 	id uuid PRIMARY KEY,
 	property_id uuid NOT NULL REFERENCES properties(id)
