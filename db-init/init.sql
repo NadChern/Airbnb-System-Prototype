@@ -51,7 +51,7 @@ CREATE TABLE bookings (
 	id uuid PRIMARY KEY,
 	property_id uuid NOT NULL REFERENCES properties(id)
 		ON UPDATE CASCADE
-		ON DELETE CASCADE,
+		ON DELETE RESTRICT,
 	guest_id uuid NOT NULL REFERENCES users(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
