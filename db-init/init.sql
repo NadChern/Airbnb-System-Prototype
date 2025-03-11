@@ -58,5 +58,5 @@ CREATE TABLE bookings (
 	updated_at timestamp NOT NULL DEFAULT NOW(),
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL,
-	status text NOT NULL CHECK (status IN ('CANCELLED', 'COMPLETED', 'CONFIRMED', 'REQUESTED'))
+	status text NOT NULL CHECK (status IN ('Cancelled', 'Completed', 'Confirmed', 'Requested'))
 );
