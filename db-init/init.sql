@@ -5,7 +5,7 @@ CREATE TABLE users (
 	middle_name text,
 	last_name text NOT NULL,
 	phone text,
-	email text NOT NULL,
+	email text NOT NULL UNIQUE,
     password_hash text NOT NULL,
     profile_pic_link text, 
 	bio text,
@@ -13,8 +13,8 @@ CREATE TABLE users (
 );
 
 CREATE TABLE properties (
-	id SERIAL PRIMARY KEY,
-	owner int NOT NULL REFERENCES users(id)
+	id uuid PRIMARY KEY,
+	owner uuid NOT NULL REFERENCES users(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
 	created_at timestamp NOT NULL DEFAULT NOW(),
@@ -30,9 +30,17 @@ CREATE TABLE properties (
 	zip_code CHAR(5) NOT NULL
 );
 
+CREATE TABLE property_photos (
+	id uuid PRIMARY KEY,
+	property_id uuid NOT NULL REFERENCES properties(id)
+		ON UPDATE CASCADE
+		ON DELETE CASCADE,
+	photo_link text NOT NULL
+);
+
 CREATE TABLE availabilities (
-	id SERIAL PRIMARY KEY,
-	property_id int NOT NULL REFERENCES properties(id)
+	id uuid PRIMARY KEY,
+	property_id uuid NOT NULL REFERENCES properties(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
 	start_date date NOT NULL,
@@ -40,15 +48,15 @@ CREATE TABLE availabilities (
 );
 
 CREATE TABLE bookings (
-	id SERIAL PRIMARY KEY,
-	property_id int NOT NULL REFERENCES properties(id)
+	id uuid PRIMARY KEY,
+	property_id uuid NOT NULL REFERENCES properties(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
-	guest_id int NOT NULL REFERENCES users(id)
+	guest_id uuid NOT NULL REFERENCES users(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
 	updated_at timestamp NOT NULL DEFAULT NOW(),
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL,
-	status text NOT NULL CHECK (status IN ('CANCELLED', 'COMPLETED', 'CONFIRMED', 'REQUESTED'))
+	status text NOT NULL CHECK (status IN ('Cancelled', 'Completed', 'Confirmed', 'Requested'))
 );
