@@ -13,7 +13,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE properties (
-	id SERIAL PRIMARY KEY,
+	id uuid PRIMARY KEY,
 	owner uuid NOT NULL REFERENCES users(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
@@ -31,8 +31,8 @@ CREATE TABLE properties (
 );
 
 CREATE TABLE availabilities (
-	id SERIAL PRIMARY KEY,
-	property_id int NOT NULL REFERENCES properties(id)
+	id uuid PRIMARY KEY,
+	property_id uuid NOT NULL REFERENCES properties(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
 	start_date date NOT NULL,
@@ -40,8 +40,8 @@ CREATE TABLE availabilities (
 );
 
 CREATE TABLE bookings (
-	id SERIAL PRIMARY KEY,
-	property_id int NOT NULL REFERENCES properties(id)
+	id uuid PRIMARY KEY,
+	property_id uuid NOT NULL REFERENCES properties(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
 	guest_id uuid NOT NULL REFERENCES users(id)
