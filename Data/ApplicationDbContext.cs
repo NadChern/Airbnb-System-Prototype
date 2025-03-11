@@ -68,7 +68,7 @@ public class ApplicationDbContext : DbContext
             .HasOne<User>()
             .WithMany() // user can have multiple bookings
             .HasForeignKey(b => b.GuestId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Property -> Availability (One-to-Many)
         modelBuilder.Entity<Availability>()
