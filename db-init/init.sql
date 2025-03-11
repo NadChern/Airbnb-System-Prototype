@@ -14,7 +14,7 @@ CREATE TABLE users (
 
 CREATE TABLE properties (
 	id SERIAL PRIMARY KEY,
-	owner int NOT NULL REFERENCES users(id)
+	owner uuid NOT NULL REFERENCES users(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
 	created_at timestamp NOT NULL DEFAULT NOW(),
@@ -44,7 +44,7 @@ CREATE TABLE bookings (
 	property_id int NOT NULL REFERENCES properties(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
-	guest_id int NOT NULL REFERENCES users(id)
+	guest_id uuid NOT NULL REFERENCES users(id)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE,
 	updated_at timestamp NOT NULL DEFAULT NOW(),
