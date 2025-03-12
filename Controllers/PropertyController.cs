@@ -13,12 +13,11 @@ public class PropertyController : ControllerBase
     private readonly IPropertyRepository _propertyRepository;
     private readonly IUserRepository _userRepository;
 
-    public PropertyController(IPropertyRepository propertyRepository, 
+    public PropertyController(IPropertyRepository propertyRepository,
         IUserRepository userRepository)
     {
         _propertyRepository = propertyRepository;
         _userRepository = userRepository;
-
     }
 
     // Get all properties
@@ -73,10 +72,11 @@ public class PropertyController : ControllerBase
     // Update existing property
     [RequireLogin]
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateProperty(Guid id, Property updatedProperty)
+    public async Task<ActionResult> UpdateProperty(Guid id, PropertyUpdateDto updateDto)
     {
         var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
         var existingProperty = await _propertyRepository.GetByIdAsync(id);
+
         if (existingProperty == null)
             return NotFound("Property not found.");
 
@@ -85,15 +85,17 @@ public class PropertyController : ControllerBase
             return Forbid();
 
         // Update only fields that are provided
-        existingProperty.Title = updatedProperty.Title ?? existingProperty.Title;
-        existingProperty.City = updatedProperty.City ?? existingProperty.City;
-        existingProperty.State = updatedProperty.State ?? existingProperty.State;
-        existingProperty.StreetAddress = updatedProperty.StreetAddress ?? existingProperty.StreetAddress;
-        existingProperty.Bedrooms = updatedProperty.Bedrooms > 0 ? updatedProperty.Bedrooms : existingProperty.Bedrooms;
-        existingProperty.Bathrooms = updatedProperty.Bathrooms > 0 ? updatedProperty.Bathrooms : existingProperty.Bathrooms;
-        existingProperty.PricePerNight = updatedProperty.PricePerNight > 0 ? updatedProperty.PricePerNight : existingProperty.PricePerNight;
-        existingProperty.SquareFeet = updatedProperty.SquareFeet > 0 ? updatedProperty.SquareFeet : existingProperty.SquareFeet;
-        existingProperty.Photos = updatedProperty.Photos ?? existingProperty.Photos;
+        if (updateDto.Title != null) existingProperty.Title = updateDto.Title;
+        if (updateDto.City != null) existingProperty.City = updateDto.City;
+        if (updateDto.State != null) existingProperty.State = updateDto.State;
+        if (updateDto.StreetAddress != null) existingProperty.StreetAddress = updateDto.StreetAddress;
+        if (updateDto.ZipCode != null) existingProperty.ZipCode = updateDto.ZipCode;
+        if (updateDto.About != null) existingProperty.About = updateDto.About;
+        if (updateDto.Bedrooms.HasValue) existingProperty.Bedrooms = updateDto.Bedrooms.Value;
+        if (updateDto.Bathrooms.HasValue) existingProperty.Bathrooms = updateDto.Bathrooms.Value;
+        if (updateDto.PricePerNight.HasValue) existingProperty.PricePerNight = updateDto.PricePerNight.Value;
+        if (updateDto.SquareFeet.HasValue) existingProperty.SquareFeet = updateDto.SquareFeet.Value;
+        if (updateDto.Photos != null) existingProperty.Photos = updateDto.Photos;
 
         await _propertyRepository.UpdateAsync(existingProperty);
         return NoContent();
