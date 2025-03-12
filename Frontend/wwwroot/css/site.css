@@ -1,0 +1,173 @@
+/* Body Styles */
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    color: #222;
+}
+
+/* Header Styles */
+.header {
+    background-color: #ff5a5f;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+    .header h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+/* Search Section Styles */
+.search-section {
+    background-color: #ffffff;
+    padding: 50px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+    border-radius: 8px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+    .search-section h2 {
+        font-size: 36px;
+        margin-bottom: 30px;
+        text-align: center;
+        color: #333;
+    }
+
+.search-form input,
+.search-form button {
+    padding: 15px;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+/* Listing Cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+    .card:hover {
+        transform: translateY(-10px);
+    }
+
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+
+.card-body {
+    padding: 25px;
+    background-color: #ffffff;
+    flex-grow: 1;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ff5a5f;
+}
+
+.details {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Listing container for 3 items per row and 12 items per page */
+.listing-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+    gap: 20px;
+    justify-items: center;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #ff5a5f;
+    border-color: #ff5a5f;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #ff3d3f;
+        border-color: #ff3d3f;
+    }
+
+.btn {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+    .pagination .page-link {
+        border: 1px solid #ff5a5f;
+        border-radius: 50%;
+        padding: 10px 15px;
+        font-weight: bold;
+        background-color: #fff;
+        color: #ff5a5f;
+        cursor: pointer;
+    }
+
+        .pagination .page-link:hover {
+            background-color: #ff5a5f;
+            color: white;
+        }
+
+/* Footer Styles */
+.footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    margin-top: 60px;
+}
+
+    .footer a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }

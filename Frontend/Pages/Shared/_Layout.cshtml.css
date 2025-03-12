@@ -1,0 +1,133 @@
+/* General Styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #f7f7f7;
+	color: #333;
+}
+
+/* Navbar Styles */
+.navbar {
+	padding: 20px 0;
+	background-color: #fff;
+	border-bottom: 1px solid #eee;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+	font-size: 2rem;
+	font-weight: 600;
+	color: #FF5A5F;
+}
+
+.navbar-toggler-icon {
+	color: #FF5A5F;
+}
+
+.navbar-nav .nav-link {
+	font-weight: 500;
+	color: #333;
+}
+
+	.navbar-nav .nav-link:hover {
+		color: #FF5A5F;
+	}
+
+.navbar-nav .nav-item {
+	padding-left: 15px;
+}
+
+/* Footer Styles */
+footer {
+	background-color: #fff;
+	padding: 20px 0;
+	color: #777;
+	text-align: center;
+	font-size: 0.9rem;
+}
+
+	footer a {
+		color: #FF5A5F;
+		text-decoration: none;
+	}
+
+		footer a:hover {
+			text-decoration: underline;
+		}
+
+/* Footer Positioning */
+.footer {
+	position: relative;
+	bottom: 0;
+	width: 100%;
+}
+
+/* Box Shadows */
+.box-shadow {
+	box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.border-top {
+	border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+	border-bottom: 1px solid #e5e5e5;
+}
+
+/* Button and Link Styling */
+a {
+	color: #0077cc;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #1b6ec2;
+	border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+	color: #fff;
+	background-color: #1b6ec2;
+	border-color: #1861ac;
+}
+
+/* Sticky Header */
+.sticky-top {
+	position: sticky;
+	top: 0;
+	z-index: 1020;
+}
+
+/* Button Accept Policy */
+button.accept-policy {
+	font-size: 1rem;
+	line-height: inherit;
+}
+
+/* Navbar Dropdown */
+.navbar-collapse {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.navbar-nav {
+	display: flex;
+	align-items: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+	.navbar-collapse {
+		justify-content: space-between;
+	}
+
+	.navbar-nav .nav-item {
+		padding-left: 10px;
+	}
+}

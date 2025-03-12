@@ -1,0 +1,70 @@
+@page
+@model Airbnb_frontpages.Pages.IndexModel
+
+<div class="container">
+    <!-- Header -->
+    <header class="header">
+
+        <p>Find your next stay with ease.</p>
+    </header>
+
+    <!-- Search Section -->
+    <section class="search-section mt-5">
+        <h2>Find your next stay</h2>
+        <form class="search-form">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="destination" class="form-label">Destination</label>
+                    <input type="text" class="form-control" id="destination" placeholder="Enter destination">
+                </div>
+                <div class="col-md-2">
+                    <label for="check-in" class="form-label">Check-in</label>
+                    <input type="date" class="form-control" id="check-in">
+                </div>
+                <div class="col-md-2">
+                    <label for="check-out" class="form-label">Check-out</label>
+                    <input type="date" class="form-control" id="check-out">
+                </div>
+                <div class="col-md-2">
+                    <label for="guests" class="form-label">Guests</label>
+                    <input type="number" class="form-control" id="guests" min="1" placeholder="1">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100 mt-4">Search</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <!-- Listings Section -->
+    @if (Model.Listings != null && Model.Listings.Any())
+    {
+    <div class="listing-container">
+        @foreach (var listing in Model.Listings)
+            {
+        <div class="card">
+            <img src="@listing.PhotoLink" class="card-img-top" alt="@listing.Owner">
+            <div class="card-body">
+                <h5 class="card-title">@listing.Owner</h5>
+                <p class="card-text">@listing.About</p>
+                <p class="price">@($"${listing.PricePerNight}/night")</p>
+                <p class="details"><strong>Bedrooms:</strong> @listing.Bedrooms</p>
+                <p class="details"><strong>Bathrooms:</strong> @listing.Bathrooms</p>
+                <p class="details"><strong>Location:</strong> @listing.StreetAddress, @listing.City, @listing.State</p>
+            </div>
+        </div>
+            }
+    </div>
+    }
+    else
+    {
+    <p>No listings available.</p>
+    }
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <a class="page-link" href="#">1</a>
+        <a class="page-link" href="#">2</a>
+        <a class="page-link" href="#">3</a>
+    </div>
+</div>
