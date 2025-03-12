@@ -1,0 +1,28 @@
+@page
+@model Airbnb_frontpages.Pages.PropertyDetailModel
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+<div class="container">
+    <h1>Property Details</h1>
+    
+    @if (Model.Property != null)
+    {
+        <div class="card">
+            <img src="@Model.Property.PhotoLink" class="card-img-top" alt="Property Image">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Property.Owner's Property</h5>
+                <p><strong>About:</strong> @Model.Property.About</p>
+                <p><strong>Location:</strong> @Model.Property.StreetAddress, @Model.Property.City, @Model.Property.State</p>
+                <p><strong>Price per night:</strong> $@Model.Property.PricePerNight</p>
+                <p><strong>Bedrooms:</strong> @Model.Property.Bedrooms</p>
+                <p><strong>Bathrooms:</strong> @Model.Property.Bathrooms</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Property not found.</p>
+    }
+</div>

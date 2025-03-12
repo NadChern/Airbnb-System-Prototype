@@ -1,70 +1,81 @@
 @page
 @model Airbnb_frontpages.Pages.IndexModel
+@{
+    ViewData["Title"] = "Find Your Stay | Airbnb Clone";
+}
 
-<div class="container">
-    <!-- Header -->
-    <header class="header">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Hero Section -->
+        <header class="text-center mb-5">
+            <h1 class="fw-bold text-danger">Find Your Next Stay</h1>
+            <p class="text-muted fs-5">Discover amazing places to stay for your next trip.</p>
+        </header>
 
-        <p>Find your next stay with ease.</p>
-    </header>
+        <!-- Search Section -->
+        <section class="search-section p-4 bg-light rounded shadow-sm mb-5">
+            <h4 class="text-center mb-4 text-dark">Find Your Perfect Place</h4>
+            <form class="search-form">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Destination</label>
+                        <input type="text" class="form-control" id="destination" placeholder="Enter city or location">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Check-in</label>
+                        <input type="date" class="form-control" id="check-in">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Check-out</label>
+                        <input type="date" class="form-control" id="check-out">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Guests</label>
+                        <input type="number" class="form-control" id="guests" min="1" placeholder="1">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-danger w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+        </section>
 
-    <!-- Search Section -->
-    <section class="search-section mt-5">
-        <h2>Find your next stay</h2>
-        <form class="search-form">
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="destination" class="form-label">Destination</label>
-                    <input type="text" class="form-control" id="destination" placeholder="Enter destination">
-                </div>
-                <div class="col-md-2">
-                    <label for="check-in" class="form-label">Check-in</label>
-                    <input type="date" class="form-control" id="check-in">
-                </div>
-                <div class="col-md-2">
-                    <label for="check-out" class="form-label">Check-out</label>
-                    <input type="date" class="form-control" id="check-out">
-                </div>
-                <div class="col-md-2">
-                    <label for="guests" class="form-label">Guests</label>
-                    <input type="number" class="form-control" id="guests" min="1" placeholder="1">
-                </div>
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-primary w-100 mt-4">Search</button>
-                </div>
-            </div>
-        </form>
-    </section>
-
-    <!-- Listings Section -->
-    @if (Model.Listings != null && Model.Listings.Any())
-    {
-    <div class="listing-container">
-        @foreach (var listing in Model.Listings)
+        <!-- Listings Section -->
+        <div class="row">
+            @if (Model.Listings != null && Model.Listings.Any())
             {
-        <div class="card">
-            <img src="@listing.PhotoLink" class="card-img-top" alt="@listing.Owner">
-            <div class="card-body">
-                <h5 class="card-title">@listing.Owner</h5>
-                <p class="card-text">@listing.About</p>
-                <p class="price">@($"${listing.PricePerNight}/night")</p>
-                <p class="details"><strong>Bedrooms:</strong> @listing.Bedrooms</p>
-                <p class="details"><strong>Bathrooms:</strong> @listing.Bathrooms</p>
-                <p class="details"><strong>Location:</strong> @listing.StreetAddress, @listing.City, @listing.State</p>
+            @foreach (var listing in Model.Listings)
+                {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm border-0 rounded">
+                    <img src="@listing.PhotoLink" class="card-img-top rounded-top" alt="Property Image">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">@listing.Owner's Property</h5>
+                        <p class="card-text text-muted">@listing.About</p>
+                        <p><strong>Price:</strong> <span class="text-success fw-bold">$@listing.PricePerNight / night</span></p>
+                        <a href="/PropertyDetail?id=@listing.Id" class="btn btn-outline-danger w-100">View Details</a>
+                    </div>
+                </div>
             </div>
-        </div>
+                }
             }
+            else
+            {
+            <p class="text-center text-muted fs-5">No listings available at the moment.</p>
+            }
+        </div>
     </div>
-    }
-    else
-    {
-    <p>No listings available.</p>
-    }
 
-    <!-- Pagination -->
-    <div class="pagination">
-        <a class="page-link" href="#">1</a>
-        <a class="page-link" href="#">2</a>
-        <a class="page-link" href="#">3</a>
-    </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"></script>
+</body>
+</html>

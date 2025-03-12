@@ -1,4 +1,4 @@
-/* Body Styles */
+/* Global Styles */
 body {
     font-family: 'Helvetica Neue', sans-serif;
     background-color: #f7f7f7;
@@ -10,83 +10,105 @@ body {
 /* Header Styles */
 .header {
     background-color: #ff5a5f;
-    padding: 15px;
+    padding: 20px;
     color: white;
     text-align: center;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
 }
 
     .header h1 {
-        font-size: 36px;
+        font-size: 40px;
         margin-bottom: 10px;
     }
 
-/* Search Section Styles */
+/* Search Section */
 .search-section {
     background-color: #ffffff;
-    padding: 50px 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin-bottom: 50px;
-    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 30px auto;
 }
 
     .search-section h2 {
-        font-size: 36px;
-        margin-bottom: 30px;
+        font-size: 32px;
+        margin-bottom: 25px;
         text-align: center;
         color: #333;
     }
 
 .search-form input,
 .search-form button {
-    padding: 15px;
+    padding: 14px;
     font-size: 1rem;
     border-radius: 8px;
     margin: 10px 0;
 }
+
+.search-form input {
+    border: 1px solid #ccc;
+    transition: all 0.3s ease-in-out;
+}
+
+    .search-form input:focus {
+        border-color: #ff5a5f;
+        box-shadow: 0 0 5px rgba(255, 90, 95, 0.5);
+        outline: none;
+    }
+
+.search-form button {
+    background-color: #ff5a5f;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+    .search-form button:hover {
+        background-color: #e0484d;
+    }
 
 /* Listing Cards */
 .card {
     border: none;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
     .card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-8px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     }
 
 .card-img-top {
-    height: 300px;
+    height: 280px;
     object-fit: cover;
     border-radius: 12px 12px 0 0;
 }
 
 .card-body {
-    padding: 25px;
+    padding: 20px;
     background-color: #ffffff;
     flex-grow: 1;
 }
 
 .card-title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .card-text {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #666;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .price {
@@ -96,17 +118,17 @@ body {
 }
 
 .details {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #777;
 }
 
-/* Listing container for 3 items per row and 12 items per page */
+/* Responsive Grid Layout for Listings */
 .listing-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
     gap: 20px;
     justify-items: center;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 /* Buttons */
@@ -114,11 +136,12 @@ body {
     background-color: #ff5a5f;
     border-color: #ff5a5f;
     color: white;
+    font-weight: bold;
 }
 
     .btn-primary:hover {
-        background-color: #ff3d3f;
-        border-color: #ff3d3f;
+        background-color: #e0484d;
+        border-color: #e0484d;
     }
 
 .btn {
@@ -128,7 +151,18 @@ body {
     width: 100%;
     cursor: pointer;
     text-align: center;
+    transition: all 0.3s ease-in-out;
 }
+
+.btn-outline-primary {
+    color: #ff5a5f;
+    border-color: #ff5a5f;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #ff5a5f;
+        color: white;
+    }
 
 /* Pagination */
 .pagination {
@@ -146,6 +180,7 @@ body {
         background-color: #fff;
         color: #ff5a5f;
         cursor: pointer;
+        transition: all 0.3s ease-in-out;
     }
 
         .pagination .page-link:hover {
@@ -153,17 +188,18 @@ body {
             color: white;
         }
 
-/* Footer Styles */
+/* Footer */
 .footer {
     background-color: #222;
     color: white;
     text-align: center;
     padding: 30px;
     margin-top: 60px;
+    font-size: 1rem;
 }
 
     .footer a {
-        color: #fff;
+        color: #ff5a5f;
         text-decoration: none;
         font-weight: bold;
     }
@@ -171,3 +207,68 @@ body {
         .footer a:hover {
             text-decoration: underline;
         }
+/* General Styles */
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f8f9fa;
+    color: #222;
+}
+
+/* Header Styles */
+.header {
+    background-color: #ff5a5f;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Search Section */
+.search-section {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Listing Cards */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Buttons */
+.btn-danger {
+    background-color: #ff5a5f;
+    border-color: #ff5a5f;
+}
+
+    .btn-danger:hover {
+        background-color: #e0484d;
+        border-color: #e0484d;
+    }
+
+/* Footer */
+.footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
