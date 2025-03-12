@@ -1,8 +1,7 @@
 using System.Text.Json.Serialization;
 using AirbnbREST.Data;
 using AirbnbREST.Repositories;
-using AirbnbREST.Utils;
-using Microsoft.AspNetCore.Session;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +14,34 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// Configure Authentication
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultForbidScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    })
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "AirbnbAuth";
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromHours(24);
+        options.LoginPath = "/api/auth/login";
+        
+        // Return a JSON response with 403 status
+        options.Events = new CookieAuthenticationEvents
+        {
+            OnRedirectToAccessDenied = context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json";
+                var result = System.Text.Json.JsonSerializer.Serialize(new { message = "Access denied. You don't have permission to access this resource." });
+                return context.Response.WriteAsync(result);
+            }
+        };
+    });
 
 // enum converter
 builder.Services.AddControllers()
@@ -40,7 +67,6 @@ builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
 builder.Services.AddScoped<IPropertyPhotoRepository, PropertyPhotoRepository>();
-// !need add photos
 
 var app = builder.Build();
 
@@ -52,6 +78,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Enable session middleware

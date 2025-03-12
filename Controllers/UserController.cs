@@ -74,29 +74,30 @@ public class UserController : ControllerBase
         return Ok("Login successful.");
     }
 
+
     // Update user details (only self-access)
     [RequireLogin]
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateUser(Guid id, User updatedUser)
+    public async Task<ActionResult> UpdateUser(Guid id, UserUpdateDto updateDto)
     {
         var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
 
         // Users can only update their own profile
         if (loggedInUserId != id)
-            return Forbid(); // 403 Forbidden
+            return Forbid();
 
         var existingUser = await _userRepository.GetByIdAsync(id);
         if (existingUser == null)
             return NotFound("User not found.");
 
         // Update only fields that are provided
-        existingUser.FirstName = updatedUser.FirstName ?? existingUser.FirstName;
-        existingUser.MiddleName = updatedUser.MiddleName ?? existingUser.MiddleName;
-        existingUser.LastName = updatedUser.LastName ?? existingUser.LastName;
-        existingUser.Phone = updatedUser.Phone ?? existingUser.Phone;
-        existingUser.Email = updatedUser.Email ?? existingUser.Email;
-        existingUser.ProfilePicLink = updatedUser.ProfilePicLink ?? existingUser.ProfilePicLink;
-        existingUser.Bio = updatedUser.Bio ?? existingUser.Bio;
+        if (updateDto.FirstName != null) existingUser.FirstName = updateDto.FirstName;
+        if (updateDto.MiddleName != null) existingUser.MiddleName = updateDto.MiddleName;
+        if (updateDto.LastName != null) existingUser.LastName = updateDto.LastName;
+        if (updateDto.Phone != null) existingUser.Phone = updateDto.Phone;
+        if (updateDto.Email != null) existingUser.Email = updateDto.Email;
+        if (updateDto.ProfilePicLink != null) existingUser.ProfilePicLink = updateDto.ProfilePicLink;
+        if (updateDto.Bio != null) existingUser.Bio = updateDto.Bio;
 
         await _userRepository.UpdateAsync(existingUser);
         return NoContent();
@@ -114,16 +115,7 @@ public class UserController : ControllerBase
         return Ok("Logged out successfully."); // User’s session ID is deleted on the server.
     }
 
-    
-    // REST FUNC FOR TESTING ONLY. DELETE FOR SUBMITTION
-    // CHECK WITH SHEETAL - does frontend needs them (if yes - restrict access to admin role)
-    // Get all users (for testing purpose only - delete on submission!)
-    [HttpGet]
-    public async Task<IEnumerable<User>> GetUsers()
-    {
-        return await _userRepository.GetAllAsync();
-    }
-    
+
     // Get user role by ID
     [RequireLogin]
     [HttpGet("{id}/role")]
@@ -132,28 +124,15 @@ public class UserController : ControllerBase
         var role = await _userRepository.GetUserRoleAsync(id);
         if (role == null)
             return NotFound("User not found or role not assigned.");
-    
+
         return Ok(role);
     }
 
-    // Find user by name
-    [RequireLogin]
-    [HttpGet("search")]
-    public async Task<IEnumerable<User>> FindUserByName([FromQuery] string firstName,
-        [FromQuery] string lastName)
+    // REST FUNC FOR TESTING ONLY. DELETE FOR SUBMITTION
+    // Get all users (for testing purpose only - delete on submission!)
+    [HttpGet]
+    public async Task<IEnumerable<User>> GetUsers()
     {
-        return await _userRepository.FindByNameAsync(firstName, lastName);
-    }
-
-    // Get user by email
-    [RequireLogin]
-    [HttpGet("email/{email}")]
-    public async Task<ActionResult<User>> GetUserByEmail(string email)
-    {
-        var user = await _userRepository.GetByEmailAsync(email);
-        if (user == null)
-            return NotFound("User not found.");
-
-        return Ok(user);
+        return await _userRepository.GetAllAsync();
     }
 }

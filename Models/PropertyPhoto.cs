@@ -6,10 +6,11 @@ public class PropertyPhoto
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     
-    [Required]
+    [Required(ErrorMessage = "Property ID is required")]
     public Guid PropertyId { get; set; } // Foreign key to Property
     
-    [Required]
-    public string PhotoUrl { get; set; } // URL or storage path of the photo
+    [Required(ErrorMessage = "Photo URL is required")]
+    [Url(ErrorMessage = "Invalid photo URL format")]
+    public string PhotoUrl { get; set; } // URL of the property
     
 }

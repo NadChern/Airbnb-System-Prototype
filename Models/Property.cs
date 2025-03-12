@@ -8,7 +8,7 @@ public class Property
     [Required(ErrorMessage = "Owner ID is required")]
     public Guid Owner { get; set; }
         
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
         
     [Required(ErrorMessage = "Number of bedrooms is required")]
     [Range(1, 20, ErrorMessage = "Bedrooms must be between 1 and 20")]
@@ -30,7 +30,6 @@ public class Property
     [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters")]
     public string Title { get; set; }
         
-    [Required(ErrorMessage = "Property description is required")]
     [StringLength(2000, ErrorMessage = "Description cannot exceed 2000 characters")]
     public string About { get; set; }
         
@@ -46,5 +45,6 @@ public class Property
     [Required(ErrorMessage = "ZIP code is required")]
     public string ZipCode { get; set; }
         
-    public List<PropertyPhoto>? Photos { get; set; }
+    // Navigation for photos
+    public List<PropertyPhoto>? Photos { get; set; } 
 }
