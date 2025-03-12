@@ -1,14 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
 namespace AirbnbREST.Models;
 
 public class User
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; }
    
     [Required(ErrorMessage = "First name is required")]
     public string FirstName { get; set; }
@@ -18,9 +16,8 @@ public class User
     [Required(ErrorMessage = "Last name is required")]
     public string LastName { get; set; }
     
-    [Required(ErrorMessage = "Phone number is required")]
     [Phone(ErrorMessage = "Invalid phone number format")]
-    public string Phone { get; set; }
+    public string? Phone { get; set; }
     
     [Required(ErrorMessage = "Email is required")]
     [EmailAddress(ErrorMessage = "Invalid email format")]
@@ -30,6 +27,7 @@ public class User
     [Required(ErrorMessage = "Password is required")]
     public string PasswordHash { get; set; }
         
+    [Url(ErrorMessage = "Invalid profile picture URL format")]
     public string? ProfilePicLink { get; set; }
     
     public string? Bio { get; set; }

@@ -11,7 +11,7 @@ public class Booking
     [Required(ErrorMessage = "Guest ID is required")]
     public Guid GuestId { get; set; }
         
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; }
         
     [Required(ErrorMessage = "Start date is required")]
     public DateTime StartDate { get; set; }
@@ -19,7 +19,7 @@ public class Booking
     [Required(ErrorMessage = "End date is required")]
     public DateTime EndDate { get; set; }
     
-    // every new booking is always created as requested to prevent status errors
+    // Every new booking is always created as requested to prevent status errors
     [Required(ErrorMessage = "Booking status is required")]
     public BookingStatus Status { get; set; } = BookingStatus.Requested;
 }
