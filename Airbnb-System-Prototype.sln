@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Airbnb frontpages", "AirbnbFrontend\Airbnb frontpages.csproj", "{549AD7DB-1209-4C1C-93B2-F084AE862238}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirbnbREST", "AirbnbBackend\AirbnbREST.csproj", "{FA3EC53A-A165-45B2-9102-991E96056AD5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{549AD7DB-1209-4C1C-93B2-F084AE862238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{549AD7DB-1209-4C1C-93B2-F084AE862238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{549AD7DB-1209-4C1C-93B2-F084AE862238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{549AD7DB-1209-4C1C-93B2-F084AE862238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA3EC53A-A165-45B2-9102-991E96056AD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA3EC53A-A165-45B2-9102-991E96056AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA3EC53A-A165-45B2-9102-991E96056AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA3EC53A-A165-45B2-9102-991E96056AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1723115C-CB03-4C7F-91CA-90009CD77658}
+	EndGlobalSection
+EndGlobal
