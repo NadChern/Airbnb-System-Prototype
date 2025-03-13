@@ -15,8 +15,8 @@ public class Property
     public int Bedrooms { get; set; }
         
     [Required(ErrorMessage = "Number of bathrooms is required")]
-    [Range(1, 20, ErrorMessage = "Bathrooms must be between 1 and 20")]
-    public int Bathrooms { get; set; }
+        [Range(typeof(decimal), "0.5", "20.0", ErrorMessage = "Bathrooms must be between 0.5 and 20")]
+     public decimal Bathrooms { get; set; }
         
     [Required(ErrorMessage = "Square footage is required")]
     [Range(100, 10000, ErrorMessage = "Square feet must be between 100 and 10,000")]
@@ -25,25 +25,25 @@ public class Property
     [Required(ErrorMessage = "Price per night is required")]
     [Range(1, 10000, ErrorMessage = "Price must be between 1 and 10,000")]
     public int PricePerNight { get; set; }
-        
+
     [Required(ErrorMessage = "Property title is required")]
     [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters")]
-    public string? Title { get; set; }
-        
+    public required string Title { get; set; }
+
     [StringLength(2000, ErrorMessage = "Description cannot exceed 2000 characters")]
     public string? About { get; set; }
         
     [Required(ErrorMessage = "Street address is required")]
-    public string? StreetAddress { get; set; }
+    public required string StreetAddress { get; set; }
         
     [Required(ErrorMessage = "City is required")]
-    public string? City { get; set; }
+    public required string City { get; set; }
         
     [Required(ErrorMessage = "State is required")]
-    public string? State { get; set; }
+    public required string State { get; set; }
         
     [Required(ErrorMessage = "ZIP code is required")]
-    public string? ZipCode { get; set; }
+    public required string ZipCode { get; set; }
         
     // Navigation for photos
     public List<PropertyPhoto>? Photos { get; set; } 
