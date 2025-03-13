@@ -15,8 +15,8 @@ public class Property
     public int Bedrooms { get; set; }
         
     [Required(ErrorMessage = "Number of bathrooms is required")]
-    [Range(typeof(decimal), "0.5", "20.0", ErrorMessage = "Bathrooms must be between 0.5 and 20")]
-    public decimal Bathrooms { get; set; }
+    [Range(1, 20, ErrorMessage = "Bathrooms must be between 1 and 20")]
+    public int Bathrooms { get; set; }
         
     [Required(ErrorMessage = "Square footage is required")]
     [Range(100, 10000, ErrorMessage = "Square feet must be between 100 and 10,000")]

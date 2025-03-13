@@ -15,35 +15,34 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 // Configure Authentication
 builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultForbidScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options =>
+{
+    options.Cookie.Name = "AirbnbAuth";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(24);
+    options.LoginPath = "/api/auth/login";
+    
+    // Return a JSON response with 403 status
+    options.Events = new CookieAuthenticationEvents
     {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultForbidScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    })
-    .AddCookie(options =>
-    {
-        options.Cookie.Name = "AirbnbAuth";
-        options.Cookie.HttpOnly = true;
-        options.ExpireTimeSpan = TimeSpan.FromHours(24);
-        options.LoginPath = "/api/auth/login";
-        
-        // Return a JSON response with 403 status
-        options.Events = new CookieAuthenticationEvents
+        OnRedirectToAccessDenied = context =>
         {
-            OnRedirectToAccessDenied = context =>
-            {
-                context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                context.Response.ContentType = "application/json";
-                var result = System.Text.Json.JsonSerializer.Serialize(new { message = "Access denied. You don't have permission to access this resource." });
-                return context.Response.WriteAsync(result);
-            }
-        };
-    });
+            context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            context.Response.ContentType = "application/json";
+            var result = System.Text.Json.JsonSerializer.Serialize(new { message = "Access denied. You don't have permission to access this resource." });
+            return context.Response.WriteAsync(result);
+        }
+    };
+});
 
-// enum converter
+// Enum converter
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -68,7 +67,21 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
 builder.Services.AddScoped<IPropertyPhotoRepository, PropertyPhotoRepository>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http2://localhost:5002/") // Adjust to match your frontend URL/port if needed
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// Build the app before using it
 var app = builder.Build();
+
+// Use CORS middleware
+app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

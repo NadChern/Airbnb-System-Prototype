@@ -1,0 +1,60 @@
+@page
+@model Airbnb_frontpages.Pages.IndexModel
+@using Airbnb_frontpages.Models
+@{
+    ViewData["Title"] = "Find Your Stay | Airbnb Clone";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Hero Section -->
+        <header class="text-center mb-5">
+            <h1 class="fw-bold text-danger">Find Your Next Stay</h1>
+            <p class="text-muted fs-5">Discover amazing places to stay for your next trip.</p>
+        </header>
+        <!-- Search Section -->
+        <section class="search-section p-4 bg-light rounded shadow-sm mb-5">
+            <h4 class="text-center mb-4 text-dark">Find Your Perfect Place</h4>
+            <form class="search-form">
+                <!-- Form inputs here -->
+            </form>
+        </section>
+        <!-- Listings Section -->
+        <div class="row">
+            @if (Model.Listings != null && Model.Listings.Any())
+            {
+                @foreach (var listing in Model.Listings)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm border-0 rounded">
+                            <img src="@(listing.Photos != null && listing.Photos.Any() 
+                                          ? listing.Photos.First().PhotoUrl 
+                                          : "/images/placeholder.png")" 
+                                 class="card-img-top rounded-top" alt="Property Image">
+                            <div class="card-body">
+                                <h5 class="card-title text-danger">@listing.Title</h5>
+                                <p class="card-text text-muted">@listing.About</p>
+                                <p><strong>Price:</strong> <span class="text-success fw-bold">$@listing.PricePerNight / night</span></p>
+                                <a href="/PropertyDetail?id=@listing.Id" class="btn btn-outline-danger w-100">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center text-muted fs-5">No listings available at the moment.</p>
+            }
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
