@@ -11,6 +11,6 @@ public class PropertyPhoto
     
     [Required(ErrorMessage = "Photo URL is required")]
     [Url(ErrorMessage = "Invalid photo URL format")]
-    public string PhotoUrl { get; set; } // URL of the property
+    public string? PhotoUrl { get; set; } // URL of the property
     
 }

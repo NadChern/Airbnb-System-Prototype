@@ -17,12 +17,16 @@ public class PropertyRepository : IPropertyRepository
 
     public async Task<IEnumerable<Property>> GetAllAsync()
     {
-        return await _context.Properties.ToListAsync();
+        return await _context.Properties
+                         .Include(p => p.Photos) 
+                         .ToListAsync();
     }
 
     public async Task<Property?> GetByIdAsync(Guid id)
     {
-        return await _context.Properties.FindAsync(id);
+        return await _context.Properties
+                         .Include(p => p.Photos)
+                         .FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public async Task<IEnumerable<Property>> FindAsync(Expression<Func<Property, bool>> predicate)

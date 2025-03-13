@@ -28,22 +28,22 @@ public class Property
         
     [Required(ErrorMessage = "Property title is required")]
     [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters")]
-    public string Title { get; set; }
+    public string? Title { get; set; }
         
     [StringLength(2000, ErrorMessage = "Description cannot exceed 2000 characters")]
-    public string About { get; set; }
+    public string? About { get; set; }
         
     [Required(ErrorMessage = "Street address is required")]
-    public string StreetAddress { get; set; }
+    public string? StreetAddress { get; set; }
         
     [Required(ErrorMessage = "City is required")]
-    public string City { get; set; }
+    public string? City { get; set; }
         
     [Required(ErrorMessage = "State is required")]
-    public string State { get; set; }
+    public string? State { get; set; }
         
     [Required(ErrorMessage = "ZIP code is required")]
-    public string ZipCode { get; set; }
+    public string? ZipCode { get; set; }
         
     // Navigation for photos
     public List<PropertyPhoto>? Photos { get; set; } 
