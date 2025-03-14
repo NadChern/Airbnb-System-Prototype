@@ -1,10 +1,12 @@
 ﻿using Airbnb_frontpages.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Airbnb_frontpages.Pages
 {
@@ -14,6 +16,15 @@ namespace Airbnb_frontpages.Pages
         private readonly ILogger<IndexModel> _logger;
 
         public List<PropertyDto> Listings { get; set; } = new List<PropertyDto>();
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public decimal? MinPrice { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public decimal? MaxPrice { get; set; }
 
         public IndexModel(HttpClient httpClient, ILogger<IndexModel> logger)
         {
@@ -30,10 +41,21 @@ namespace Airbnb_frontpages.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    // Use options to be case-insensitive if you prefer, though JsonPropertyName attributes should handle it.
                     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                    Listings = JsonSerializer.Deserialize<List<PropertyDto>>(jsonString, options) ?? new List<PropertyDto>();
-                    _logger.LogInformation("✅ API data successfully retrieved.");
+                    var allListings = JsonSerializer.Deserialize<List<PropertyDto>>(jsonString, options) ?? new List<PropertyDto>();
+
+                    // Apply filtering in C#
+                    if (!string.IsNullOrEmpty(SearchTerm))
+                        allListings = allListings.Where(l => l.Title.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                    if (MinPrice.HasValue)
+                        allListings = allListings.Where(l => l.PricePerNight >= MinPrice.Value).ToList();
+
+                    if (MaxPrice.HasValue)
+                        allListings = allListings.Where(l => l.PricePerNight <= MaxPrice.Value).ToList();
+
+                    Listings = allListings;
+                    _logger.LogInformation($"✅ API data retrieved. {Listings.Count} properties found after filtering.");
                 }
                 else
                 {
