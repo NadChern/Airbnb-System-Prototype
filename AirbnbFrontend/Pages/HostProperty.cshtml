@@ -1,0 +1,77 @@
+@page
+@model AirbnbFrontend.Pages.HostPropertyModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Become a Host</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Become a Host - Add Your Property</h2>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" asp-for="Title" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description (About)</label>
+                <textarea asp-for="About" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Street Address</label>
+                <input type="text" asp-for="StreetAddress" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">City</label>
+                <input type="text" asp-for="City" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">State</label>
+                <input type="text" asp-for="State" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">ZIP Code</label>
+                <input type="text" asp-for="ZipCode" class="form-control" required />
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Bedrooms</label>
+                    <input type="number" asp-for="Bedrooms" class="form-control" min="1" max="20" required />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Bathrooms</label>
+                    <input type="number" asp-for="Bathrooms" class="form-control" step="0.5" min="0.5" max="20" required />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Square Feet</label>
+                    <input type="number" asp-for="SquareFeet" class="form-control" min="100" max="10000" required />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Price Per Night ($)</label>
+                <input type="number" asp-for="PricePerNight" class="form-control" min="1" max="10000" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Property</button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+        <div class="alert alert-info mt-3">@Model.Message</div>
+        }
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
