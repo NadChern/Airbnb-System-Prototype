@@ -1,6 +1,25 @@
+version: '3.8'
+
 services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: airbnb-backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=airbnb-database;Username=admin;Password=adminpassword
+    ports:
+      - "5013:8080"
+    networks:
+      - airbnb-network
+
   db:
-    image: postgres
+    image: postgres:latest
     container_name: postgres-db
     restart: always
     environment:
@@ -12,6 +31,12 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db-init/:/docker-entrypoint-initdb.d/
+    networks:
+      - airbnb-network
+
+networks:
+  airbnb-network:
+    driver: bridge
 
 volumes:
   pgdata:
