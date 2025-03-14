@@ -16,6 +16,7 @@ The project is containerized using Docker, which makes it easy to start both the
 1. Clone the repository:
    ```bash
    git clone https://github.com/NadChern/Airbnb-System-Prototype.git
+   git checkout rest_docs
    cd <folder>
    ```
 
