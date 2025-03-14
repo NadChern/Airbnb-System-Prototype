@@ -272,3 +272,27 @@ body {
     text-align: center;
     padding: 30px;
 }
+/* Themed Book Now Button */
+.btn-book-now {
+    padding: 10px 16px; /* Optimal size for readability and clickability */
+    font-size: 1rem; /* Proper text size */
+    border-radius: 8px; /* Smooth rounded edges */
+    background-color: #ff5a5f; /* Primary site color */
+    border: none;
+    color: white;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    text-decoration: none; /* Removes underlines from links */
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+    .btn-book-now:hover {
+        background-color: #e0484d; /* Slightly darker hover effect */
+        transform: scale(1.05); /* Subtle lift effect */
+    }
+
+    .btn-book-now i {
+        font-size: 1.2rem; /* Slightly larger icon for clarity */
+    }

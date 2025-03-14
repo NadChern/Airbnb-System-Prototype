@@ -13,31 +13,36 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/site.css"> <!-- Ensure site.css is linked -->
 </head>
 <body>
     <div class="container mt-5">
         @if (Model.Property != null)
         {
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="@(Model.Property.Photos != null && Model.Property.Photos.Any() ? Model.Property.Photos.First().PhotoUrl : "/images/placeholder.png")" class="img-fluid rounded" alt="Property Image" />
-                </div>
-                <div class="col-md-6">
-                    <h2 class="text-danger">@Model.Property.Title</h2>
-                    <p class="text-muted">@Model.Property.About</p>
-                    <p><strong>Price per Night:</strong> $@Model.Property.PricePerNight</p>
-                    <p><strong>Bedrooms:</strong> @Model.Property.Bedrooms | <strong>Bathrooms:</strong> @Model.Property.Bathrooms</p>
-                    <p><strong>Address:</strong> @Model.Property.StreetAddress, @Model.Property.City, @Model.Property.State, @Model.Property.ZipCode</p>
-                </div>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="@(Model.Property.Photos != null && Model.Property.Photos.Any() ? Model.Property.Photos.First().PhotoUrl : "/images/placeholder.png")" class="img-fluid rounded" alt="Property Image" />
             </div>
+            <div class="col-md-6">
+                <h2 class="text-danger">@Model.Property.Title</h2>
+                <p class="text-muted">@Model.Property.About</p>
+                <p><strong>Price per Night:</strong> $@Model.Property.PricePerNight</p>
+                <p><strong>Bedrooms:</strong> @Model.Property.Bedrooms | <strong>Bathrooms:</strong> @Model.Property.Bathrooms</p>
+                <p><strong>Address:</strong> @Model.Property.StreetAddress, @Model.Property.City, @Model.Property.State, @Model.Property.ZipCode</p>
+
+                <!-- Themed Book Now Button -->
+                <a href="/Booking?propertyId=@Model.Property.Id" class="btn-book-now mt-3">
+                    <i class="bi bi-calendar-check"></i> Book Now
+                </a>
+            </div>
+        </div>
         }
         else
         {
-            <p class="text-center text-muted">Property details not available.</p>
+        <p class="text-center text-muted">Property details not available.</p>
         }
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
