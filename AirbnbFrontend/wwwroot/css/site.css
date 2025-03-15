@@ -1,0 +1,298 @@
+/* Global Styles */
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    color: #222;
+}
+
+/* Header Styles */
+.header {
+    background-color: #ff5a5f;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .header h1 {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+/* Search Section */
+.search-section {
+    background-color: #ffffff;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+    .search-section h2 {
+        font-size: 32px;
+        margin-bottom: 25px;
+        text-align: center;
+        color: #333;
+    }
+
+.search-form input,
+.search-form button {
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.search-form input {
+    border: 1px solid #ccc;
+    transition: all 0.3s ease-in-out;
+}
+
+    .search-form input:focus {
+        border-color: #ff5a5f;
+        box-shadow: 0 0 5px rgba(255, 90, 95, 0.5);
+        outline: none;
+    }
+
+.search-form button {
+    background-color: #ff5a5f;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+    .search-form button:hover {
+        background-color: #e0484d;
+    }
+
+/* Listing Cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+.card-img-top {
+    height: 280px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+
+.card-body {
+    padding: 20px;
+    background-color: #ffffff;
+    flex-grow: 1;
+}
+
+.card-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 18px;
+}
+
+.price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ff5a5f;
+}
+
+.details {
+    font-size: 1rem;
+    color: #777;
+}
+
+/* Responsive Grid Layout for Listings */
+.listing-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 20px;
+    justify-items: center;
+    margin-top: 30px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #ff5a5f;
+    border-color: #ff5a5f;
+    color: white;
+    font-weight: bold;
+}
+
+    .btn-primary:hover {
+        background-color: #e0484d;
+        border-color: #e0484d;
+    }
+
+.btn {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-primary {
+    color: #ff5a5f;
+    border-color: #ff5a5f;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #ff5a5f;
+        color: white;
+    }
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+    .pagination .page-link {
+        border: 1px solid #ff5a5f;
+        border-radius: 50%;
+        padding: 10px 15px;
+        font-weight: bold;
+        background-color: #fff;
+        color: #ff5a5f;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .pagination .page-link:hover {
+            background-color: #ff5a5f;
+            color: white;
+        }
+
+/* Footer */
+.footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    margin-top: 60px;
+    font-size: 1rem;
+}
+
+    .footer a {
+        color: #ff5a5f;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+/* General Styles */
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f8f9fa;
+    color: #222;
+}
+
+/* Header Styles */
+.header {
+    background-color: #ff5a5f;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Search Section */
+.search-section {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Listing Cards */
+.card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Buttons */
+.btn-danger {
+    background-color: #ff5a5f;
+    border-color: #ff5a5f;
+}
+
+    .btn-danger:hover {
+        background-color: #e0484d;
+        border-color: #e0484d;
+    }
+
+/* Footer */
+.footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+/* Themed Book Now Button */
+.btn-book-now {
+    padding: 10px 16px; /* Optimal size for readability and clickability */
+    font-size: 1rem; /* Proper text size */
+    border-radius: 8px; /* Smooth rounded edges */
+    background-color: #ff5a5f; /* Primary site color */
+    border: none;
+    color: white;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    text-decoration: none; /* Removes underlines from links */
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+    .btn-book-now:hover {
+        background-color: #e0484d; /* Slightly darker hover effect */
+        transform: scale(1.05); /* Subtle lift effect */
+    }
+
+    .btn-book-now i {
+        font-size: 1.2rem; /* Slightly larger icon for clarity */
+    }

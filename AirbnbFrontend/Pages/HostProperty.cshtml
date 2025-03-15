@@ -1,0 +1,89 @@
+@page
+@model AirbnbFrontend.Pages.HostPropertyModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Become a Host</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Become a Host - Add Your Property</h2>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" asp-for="HostProperty.Title" class="form-control" required />
+                <span asp-validation-for="HostProperty.Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description (About)</label>
+                <textarea asp-for="HostProperty.About" class="form-control"></textarea>
+                <span asp-validation-for="HostProperty.About" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Street Address</label>
+                <input type="text" asp-for="HostProperty.StreetAddress" class="form-control" required />
+                <span asp-validation-for="HostProperty.StreetAddress" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">City</label>
+                <input type="text" asp-for="HostProperty.City" class="form-control" required />
+                <span asp-validation-for="HostProperty.City" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">State</label>
+                <input type="text" asp-for="HostProperty.State" class="form-control" required />
+                <span asp-validation-for="HostProperty.State" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">ZIP Code</label>
+                <input type="text" asp-for="HostProperty.ZipCode" class="form-control" required />
+                <span asp-validation-for="HostProperty.ZipCode" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Bedrooms</label>
+                    <input type="number" asp-for="HostProperty.Bedrooms" class="form-control" min="1" max="20" required />
+                    <span asp-validation-for="HostProperty.Bedrooms" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Bathrooms</label>
+                    <input type="number" asp-for="HostProperty.Bathrooms" class="form-control" step="0.5" min="0.5" max="20" required />
+                    <span asp-validation-for="HostProperty.Bathrooms" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Square Feet</label>
+                    <input type="number" asp-for="HostProperty.SquareFeet" class="form-control" min="100" max="10000" required />
+                    <span asp-validation-for="HostProperty.SquareFeet" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Price Per Night ($)</label>
+                <input type="number" asp-for="HostProperty.PricePerNight" class="form-control" min="1" max="10000" required />
+                <span asp-validation-for="HostProperty.PricePerNight" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Property</button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="alert alert-info mt-3">@Model.Message</div>
+        }
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

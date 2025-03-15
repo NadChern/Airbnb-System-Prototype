@@ -1,0 +1,56 @@
+@page
+@model Airbnb_frontpages.Pages.BookingModel
+@{
+    ViewData["Title"] = "Book Property";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Book a Property</h2>
+        <form method="post">
+            <!-- Hidden field: the property ID is set from query string -->
+            <input type="hidden" asp-for="BookingRequest.PropertyId" />
+            
+            <div class="mb-3">
+                <label class="form-label">Start Date</label>
+                <input type="date" asp-for="BookingRequest.StartDate" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">End Date</label>
+                <input type="date" asp-for="BookingRequest.EndDate" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Book Property</button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="alert alert-info mt-3">
+                @Model.Message
+            </div>
+
+            @if (Model.Message.Contains("Booking created successfully!"))
+            {
+                <p>You will be redirected in <span id="counter">5</span> seconds...</p>
+                <script>
+                    let counter = 5;
+                    const interval = setInterval(() => {
+                        counter--;
+                        document.getElementById("counter").textContent = counter;
+                        if (counter <= 0) {
+                            clearInterval(interval);
+                            window.location.href = "/Index";
+                        }
+                    }, 1000);
+                </script>
+            }
+        }
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
