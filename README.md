@@ -36,6 +36,7 @@ Step 3: Start Frontend (Blazor) Application
 2. Run the Blazor frontend application:
     dotnet build
     dotnet run
+3. Click on the link for the localhost to open the project
  
 Note: For the prototype, authentication such as required login to create property is not included while implementing due to time constraint.
  
