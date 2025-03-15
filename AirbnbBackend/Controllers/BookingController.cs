@@ -2,150 +2,135 @@ using AirbnbREST.Middleware;
 using AirbnbREST.Models;
 using AirbnbREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
-namespace AirbnbREST.Controllers;
-
-[ApiController]
-[Route("api/bookings")]
-public class BookingController : ControllerBase
+namespace AirbnbREST.Controllers
 {
-    private readonly IBookingRepository _bookingRepository;
-    private readonly IPropertyRepository _propertyRepository;
-    private readonly IUserRepository _userRepository;
-
-    public BookingController(IBookingRepository bookingRepository,
-        IPropertyRepository propertyRepository, IUserRepository userRepository)
+    [ApiController]
+    [Route("api/bookings")]
+    public class BookingController : ControllerBase
     {
-        _bookingRepository = bookingRepository;
-        _propertyRepository = propertyRepository;
-        _userRepository = userRepository;
-    }
+        private readonly IBookingRepository _bookingRepository;
+        private readonly IPropertyRepository _propertyRepository;
+        private readonly IUserRepository _userRepository;
 
-    // Create a new booking
-    // Protect this route → Only logged-in guests can create a booking
-    [RequireLogin]
-    [HttpPost]
-    public async Task<ActionResult<Booking>> CreateBooking(Booking booking)
-    {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-        var loggedInUserRole = await _userRepository.GetUserRoleAsync(loggedInUserId);
+        public BookingController(IBookingRepository bookingRepository,
+            IPropertyRepository propertyRepository, IUserRepository userRepository)
+        {
+            _bookingRepository = bookingRepository;
+            _propertyRepository = propertyRepository;
+            _userRepository = userRepository;
+        }
 
-        if (loggedInUserRole != UserRole.Guest)
-            return Forbid(); // Hosts cannot create bookings
+        // Create a new booking using hardcoded guest ID.
+        [HttpPost]
+        public async Task<ActionResult<Booking>> CreateBooking(Booking booking)
+        {
+            var dummyGuestId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+            booking.GuestId = dummyGuestId;
+            booking.Status = BookingStatus.Confirmed;
 
-        booking.GuestId = loggedInUserId; // Assign guest ID
-        var property = await _propertyRepository.GetByIdAsync(booking.PropertyId);
-        if (property == null)
-            return BadRequest("Property does not exist.");
+            var property = await _propertyRepository.GetByIdAsync(booking.PropertyId);
+            if (property == null)
+                return BadRequest("Property does not exist.");
 
-        var isAvailable = await _bookingRepository.IsPropertyAvailableAsync(booking.PropertyId, booking.StartDate, booking.EndDate);
-        if (!isAvailable)
-            return BadRequest("Property is not available for the selected dates.");
+            var isAvailable = await _bookingRepository.IsPropertyAvailableAsync(booking.PropertyId, booking.StartDate, booking.EndDate);
+            if (!isAvailable)
+                return BadRequest("Property is not available for the selected dates.");
 
-        await _bookingRepository.AddAsync(booking);
-        return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, booking);
-    }
+            await _bookingRepository.AddAsync(booking);
+            return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, booking);
+        }
 
-    // Get booking by ID (retrieve one booking)
-    [RequireLogin]
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Booking>> GetBookingById(Guid id)
-    {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-        var booking = await _bookingRepository.GetByIdAsync(id);
+        // Get booking by ID.
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Booking>> GetBookingById(Guid id)
+        {
+            var dummyGuestId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+            var booking = await _bookingRepository.GetByIdAsync(id);
 
-        if (booking == null)
-            return NotFound("Booking not found.");
+            if (booking == null)
+                return NotFound("Booking not found.");
 
-        var property = await _propertyRepository.GetByIdAsync(booking.PropertyId);
-        var userRole = await _userRepository.GetUserRoleAsync(loggedInUserId);
+            var property = await _propertyRepository.GetByIdAsync(booking.PropertyId);
+            if (booking.GuestId != dummyGuestId && property?.Owner != dummyGuestId)
+                return Forbid();
 
-        // Only guests who made the booking or hosts of the property can view it
-        if (booking.GuestId != loggedInUserId && property?.Owner != loggedInUserId && userRole != UserRole.Host)
-            return Forbid();
+            return Ok(booking);
+        }
 
-        return Ok(booking);
-    }
+        // Get all bookings by guest ID.
+        [HttpGet("user")]
+        public async Task<IEnumerable<Booking>> GetBookingsByUser()
+        {
+            var dummyGuestId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+            return await _bookingRepository.GetBookingsByGuestIdAsync(dummyGuestId);
+        }
 
+        // Get bookings by property ID.
+        [HttpGet("property/{propertyId}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsByProperty(Guid propertyId)
+        {
+            var dummyGuestId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+            var property = await _propertyRepository.GetByIdAsync(propertyId);
 
-    // Get all bookings by guest ID (quest can see only their own bookings)
-    [RequireLogin]
-    [HttpGet("user")]
-    public async Task<IEnumerable<Booking>> GetBookingsByUser()
-    {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-        return await _bookingRepository.GetBookingsByGuestIdAsync(loggedInUserId);
-    }
+            if (property == null)
+                return NotFound("Property not found.");
 
-    // Get bookings by property ID
-    [RequireLogin]
-    [HttpGet("property/{propertyId}")]
-    public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsByProperty(Guid propertyId)
-    {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-        var property = await _propertyRepository.GetByIdAsync(propertyId);
+            if (property.Owner != dummyGuestId)
+                return Forbid();
 
-        if (property == null)
-            return NotFound("Property not found.");
+            return Ok(await _bookingRepository.GetBookingsByPropertyIdAsync(propertyId));
+        }
 
-        // Only the property owner (host) can see bookings for their property
-        if (property.Owner != loggedInUserId)
-            return Forbid();
+        // Confirm a booking.
+        [HttpPut("{id}/confirm")]
+        public async Task<ActionResult> ConfirmBooking(Guid id)
+        {
+            var dummyGuestId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+            var booking = await _bookingRepository.GetByIdAsync(id);
 
-        return Ok(await _bookingRepository.GetBookingsByPropertyIdAsync(propertyId));
-    }
+            if (booking == null)
+                return NotFound("Booking not found.");
 
-    // Confirm a booking (new feature)
-    [RequireLogin]
-    [HttpPut("{id}/confirm")]
-    public async Task<ActionResult> ConfirmBooking(Guid id)
-    {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-        var booking = await _bookingRepository.GetByIdAsync(id);
+            var property = await _propertyRepository.GetByIdAsync(booking.PropertyId);
+            if (property == null || property.Owner != dummyGuestId)
+                return Forbid();
 
-        if (booking == null)
-            return NotFound("Booking not found.");
+            var success = await _bookingRepository.ConfirmBookingAsync(id);
+            if (!success)
+                return BadRequest("Booking cannot be confirmed.");
 
-        var property = await _propertyRepository.GetByIdAsync(booking.PropertyId);
+            return NoContent();
+        }
 
-        // Only the host who owns the property can confirm bookings
-        if (property == null || property.Owner != loggedInUserId)
-            return Forbid();
+        // Cancel a booking.
+        [HttpPut("{id}/cancel")]
+        public async Task<ActionResult> CancelBooking(Guid id)
+        {
+            var dummyGuestId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+            var booking = await _bookingRepository.GetByIdAsync(id);
 
-        var success = await _bookingRepository.ConfirmBookingAsync(id);
-        if (!success)
-            return BadRequest("Booking cannot be confirmed.");
+            if (booking == null)
+                return NotFound("Booking not found.");
 
-        return NoContent();
-    }
+            // if (booking.GuestId != dummyGuestId)
+            //     return Forbid();
 
-    // Cancel a booking
-    [RequireLogin]
-    [HttpPut("{id}/cancel")]
-    public async Task<ActionResult> CancelBooking(Guid id)
-    {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-        var booking = await _bookingRepository.GetByIdAsync(id);
+            var success = await _bookingRepository.CancelBookingAsync(id);
+            if (!success)
+                return BadRequest("Booking cannot be cancelled.");
 
-        if (booking == null)
-            return NotFound("Booking not found.");
+            return NoContent();
+        }
 
-        // Only the guest who made the booking can cancel it
-        if (booking.GuestId != loggedInUserId)
-            return Forbid();
-
-        var success = await _bookingRepository.CancelBookingAsync(id);
-        if (!success)
-            return BadRequest("Booking cannot be cancelled.");
-
-        return NoContent();
-    }
-
-    // Check property availability for given dates
-    [HttpGet("availability")]
-    public async Task<ActionResult<bool>> CheckPropertyAvailability(Guid propertyId, DateTime startDate, DateTime endDate)
-    {
-        var isAvailable = await _bookingRepository.IsPropertyAvailableAsync(propertyId, startDate, endDate);
-        return Ok(isAvailable);
+        // Check property availability for given dates.
+        [HttpGet("availability")]
+        public async Task<ActionResult<bool>> CheckPropertyAvailability(Guid propertyId, DateTime startDate, DateTime endDate)
+        {
+            var isAvailable = await _bookingRepository.IsPropertyAvailableAsync(propertyId, startDate, endDate);
+            return Ok(isAvailable);
+        }
     }
 }

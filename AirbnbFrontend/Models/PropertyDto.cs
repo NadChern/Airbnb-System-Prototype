@@ -19,6 +19,10 @@ namespace Airbnb_frontpages.Models
         public required string State { get; set; }
         public required string ZipCode { get; set; }
         public List<PropertyPhotoDto>? Photos { get; set; }
+
+        // Booking status fields for UI.
+        public bool IsBooked { get; set; }
+        public Guid? ActiveBookingId { get; set; }
     }
 
     public class PropertyPhotoDto

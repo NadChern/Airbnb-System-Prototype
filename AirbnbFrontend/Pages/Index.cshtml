@@ -46,27 +46,48 @@
         <div class="row">
             @if (Model.Listings != null && Model.Listings.Any())
             {
-            @foreach (var listing in Model.Listings)
+                foreach (var listing in Model.Listings)
                 {
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 shadow-sm border-0 rounded">
-                    <img src="@(listing.Photos != null && listing.Photos.Any()
-                                          ? listing.Photos.First().PhotoUrl
-                                          : "/images/placeholder.png")"
-                         class="card-img-top rounded-top" alt="Property Image">
-                    <div class="card-body">
-                        <h5 class="card-title text-danger">@listing.Title</h5>
-                        <p class="card-text text-muted">@listing.About</p>
-                        <p><strong>Price:</strong> <span class="text-success fw-bold">$@listing.PricePerNight / night</span></p>
-                        <a href="/PropertyDetail?id=@listing.Id" class="btn btn-outline-danger w-100">View Details</a>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm border-0 rounded">
+                            <img src="@(listing.Photos != null && listing.Photos.Any() 
+                                        ? listing.Photos.First().PhotoUrl 
+                                        : "/images/placeholder.png")"
+                                 class="card-img-top rounded-top" alt="Property Image">
+                            <div class="card-body">
+                                <h5 class="card-title text-danger">@listing.Title</h5>
+                                <p class="card-text text-muted">@listing.About</p>
+                                <p><strong>Price:</strong> <span class="text-success fw-bold">$@listing.PricePerNight / night</span></p>
+                                
+                                <!-- Booking Status Section -->
+                                @if (listing.IsBooked)
+                                {
+                                    <div class="mb-2">
+                                        <span class="badge bg-danger">Booked</span>
+                                        @if (listing.ActiveBookingId.HasValue)
+                                        {
+                                            <form method="post" asp-page-handler="Cancel" asp-route-bookingId="@listing.ActiveBookingId" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger ms-2">Cancel Booking</button>
+                                            </form>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mb-2">
+                                        <span class="badge bg-success">Available</span>
+                                    </div>
+                                }
+                                
+                                <a href="/PropertyDetail?id=@listing.Id" class="btn btn-outline-danger w-100">View Details</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
                 }
             }
             else
             {
-            <p class="text-center text-muted fs-5">No listings available at the moment.</p>
+                <p class="text-center text-muted fs-5">No listings available at the moment.</p>
             }
         </div>
     </div>
