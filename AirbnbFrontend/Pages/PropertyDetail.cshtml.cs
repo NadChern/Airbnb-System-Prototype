@@ -16,9 +16,14 @@ namespace Airbnb_frontpages.Pages
         private readonly HttpClient _httpClient;
         private readonly ILogger<PropertyDetailModel> _logger;
 
+        // Bind the property id from the query string.
+        [BindProperty(SupportsGet = true)]
+        public Guid id { get; set; }
+
         public PropertyDto? Property { get; set; }
         public bool IsBooked { get; set; }
         public Guid? ActiveBookingId { get; set; }
+        public string Message { get; set; }
 
         public PropertyDetailModel(HttpClient httpClient, ILogger<PropertyDetailModel> logger)
         {
@@ -26,9 +31,9 @@ namespace Airbnb_frontpages.Pages
             _logger = logger;
         }
 
-        public async Task<IActionResult> OnGetAsync(Guid id)
+        public async Task<IActionResult> OnGetAsync()
         {
-            // 1. Retrieve property data
+            // Retrieve property details using the query string parameter 'id'
             HttpResponseMessage response = await _httpClient.GetAsync($"http://localhost:5013/api/properties/{id}");
             if (response.IsSuccessStatusCode)
             {
@@ -39,34 +44,57 @@ namespace Airbnb_frontpages.Pages
             if (Property == null)
                 return NotFound();
 
-            // 2. Check for active booking by calling bookings endpoint
+            // Retrieve bookings for this property.
             var bookingResponse = await _httpClient.GetAsync($"http://localhost:5013/api/bookings/property/{id}");
             if (bookingResponse.IsSuccessStatusCode)
             {
                 var bookingJson = await bookingResponse.Content.ReadAsStringAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var bookings = JsonSerializer.Deserialize<List<BookingDto>>(bookingJson, options);
-                if (bookings != null && bookings.Any())
+                if (bookings != null)
                 {
-                    // Mark as booked and capture the first booking ID as the active one.
-                    IsBooked = true;
-                    ActiveBookingId = bookings.First().Id;
+                    // Filter only confirmed bookings.
+                    var confirmedBookings = bookings.Where(b => b.Status == "Confirmed").ToList();
+                    if (confirmedBookings.Any())
+                    {
+                        IsBooked = true;
+                        ActiveBookingId = confirmedBookings.First().Id;
+                    }
                 }
             }
 
             return Page();
         }
 
-        // Cancel booking handler from detail page
+        // Handler for canceling a booking.
         public async Task<IActionResult> OnPostCancelAsync(Guid bookingId)
         {
             var request = new HttpRequestMessage(HttpMethod.Put, $"http://localhost:5013/api/bookings/{bookingId}/cancel");
             // Pass the dummy guest ID via cookie header.
             request.Headers.Add("Cookie", "UserId=e8e20f27-465f-491e-8c8f-3fd548ea9c14");
             await _httpClient.SendAsync(request);
+            // Reload the detail page with the property id preserved.
+            return RedirectToPage(new { id = this.id });
+        }
 
-            // Reload the detail page with the same property ID.
-            return RedirectToPage(new { id = Property?.Id });
+        // Handler for deleting the property.
+        public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+        {
+            var userId = "e8e20f27-465f-491e-8c8f-3fd548ea9c14";
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"http://localhost:5013/api/properties/{id}");
+            request.Headers.Add("Cookie", $"UserId={userId}");
+            var response = await _httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                // Redirect to the Index page after successful deletion.
+                return RedirectToPage("/Index");
+            }
+            else
+            {
+                var errorMsg = await response.Content.ReadAsStringAsync();
+                Message = $"Error deleting property: {response.StatusCode} - {errorMsg}";
+                return Page();
+            }
         }
     }
 }

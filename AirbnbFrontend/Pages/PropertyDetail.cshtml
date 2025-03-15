@@ -2,48 +2,101 @@
 @model Airbnb_frontpages.Pages.PropertyDetailModel
 @using Airbnb_frontpages.Models
 @{
-    ViewData["Title"] = "Property Details";
+    ViewData["Title"] = Model.Property?.Title ?? "Property Detail";
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Icons for delete icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/css/site.css"> <!-- Ensure site.css is linked -->
+    <style>
+        .property-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 1.5rem;
+        }
+        .delete-btn:hover {
+            color: #a71d2a;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container mt-4">
         @if (Model.Property != null)
         {
-        <div class="row">
-            <div class="col-md-6">
-                <img src="@(Model.Property.Photos != null && Model.Property.Photos.Any() ? Model.Property.Photos.First().PhotoUrl : "/images/placeholder.png")" class="img-fluid rounded" alt="Property Image" />
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@Model.Property.Title</h2>
+                <!-- Only show the delete button if the property is NOT booked -->
+                @if (!Model.IsBooked)
+                {
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@Model.Property.Id" onsubmit="return confirm('Are you sure you want to delete this property?');">
+                        <button type="submit" class="delete-btn" title="Delete Property">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <span class="text-warning">Cannot delete while booked</span>
+                }
             </div>
-            <div class="col-md-6">
-                <h2 class="text-danger">@Model.Property.Title</h2>
-                <p class="text-muted">@Model.Property.About</p>
-                <p><strong>Price per Night:</strong> $@Model.Property.PricePerNight</p>
-                <p><strong>Bedrooms:</strong> @Model.Property.Bedrooms | <strong>Bathrooms:</strong> @Model.Property.Bathrooms</p>
-                <p><strong>Address:</strong> @Model.Property.StreetAddress, @Model.Property.City, @Model.Property.State, @Model.Property.ZipCode</p>
+            <hr />
 
-                <!-- Themed Book Now Button -->
-                <a href="/Booking?propertyId=@Model.Property.Id" class="btn-book-now mt-3">
-                    <i class="bi bi-calendar-check"></i> Book Now
-                </a>
+            <!-- Property Image -->
+            <img src="@(Model.Property.Photos != null && Model.Property.Photos.Any() 
+                        ? Model.Property.Photos.First().PhotoUrl 
+                        : Url.Content("~/images/placeholder.png"))"
+                 alt="Property Image" class="property-img mb-4" />
+
+            <!-- Property Details -->
+            <div class="mb-3">
+                <p class="lead">@Model.Property.About</p>
+                <p><strong>Address:</strong> @Model.Property.StreetAddress, @Model.Property.City, @Model.Property.State @Model.Property.ZipCode</p>
+                <p><strong>Price per Night:</strong> $@Model.Property.PricePerNight</p>
             </div>
-        </div>
+
+            <!-- Booking Status -->
+            <div class="mb-3">
+                @if (Model.IsBooked)
+                {
+                    <span class="badge bg-danger">Booked</span>
+                    @if (Model.ActiveBookingId.HasValue)
+                    {
+                        <!-- Cancel Booking Form -->
+                        <form method="post" asp-page-handler="Cancel" class="d-inline ms-2">
+                            <input type="hidden" name="bookingId" value="@Model.ActiveBookingId" />
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel Booking</button>
+                        </form>
+                    }
+                }
+                else
+                {
+                    <span class="badge bg-success">Available</span>
+                    <a href="/Booking?PropertyId=@Model.Property.Id" class="btn btn-primary btn-sm ms-2">Book Now</a>
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="alert alert-info mt-3">@Model.Message</div>
+            }
         }
         else
         {
-        <p class="text-center text-muted">Property details not available.</p>
+            <p class="text-muted">Property not found.</p>
         }
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -11,12 +11,14 @@ namespace AirbnbREST.Controllers;
 public class PropertyController : ControllerBase
 {
     private readonly IPropertyRepository _propertyRepository;
+    private readonly IBookingRepository _bookingRepository;
     private readonly IUserRepository _userRepository;
 
-    public PropertyController(IPropertyRepository propertyRepository, 
-        IUserRepository userRepository)
+    public PropertyController(IPropertyRepository propertyRepository,
+        IUserRepository userRepository, IBookingRepository bookingRepository)
     {
         _propertyRepository = propertyRepository;
+        _bookingRepository = bookingRepository;
         _userRepository = userRepository;
 
     }
@@ -59,7 +61,8 @@ public class PropertyController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Property>> CreateProperty(Property property)
     {
-        var loggedInUserId = Guid.Parse(property.Owner.ToString());
+        var loggedInUserId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+        // var loggedInUserId = Guid.Parse(property.Owner.ToString());
         var loggedInUserRole = await _userRepository.GetUserRoleAsync(loggedInUserId);
 
         if (loggedInUserRole != UserRole.Host)
@@ -75,7 +78,8 @@ public class PropertyController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateProperty(Guid id, Property updatedProperty)
     {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+        var loggedInUserId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+        // var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
         var existingProperty = await _propertyRepository.GetByIdAsync(id);
         if (existingProperty == null)
             return NotFound("Property not found.");
@@ -104,16 +108,28 @@ public class PropertyController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProperty(Guid id)
     {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+        // Try to get the user ID from session; if not available, use the dummy ID.
+        var loggedInUserId = Guid.Parse("e8e20f27-465f-491e-8c8f-3fd548ea9c14");
+
         var property = await _propertyRepository.GetByIdAsync(id);
         if (property == null)
             return NotFound("Property not found.");
 
-        // Hosts can only delete their own properties
+        // Only allow deletion if the property belongs to the logged-in (or dummy) user.
         if (property.Owner != loggedInUserId)
             return Forbid();
 
+        // Retrieve all bookings for this property.
+        var bookings = await _bookingRepository.GetBookingsByPropertyIdAsync(id);
+        // Delete each booking to remove foreign key references.
+        foreach (var booking in bookings)
+        {
+            await _bookingRepository.DeleteAsync(booking.Id);
+        }
+
+        // Now delete the property.
         await _propertyRepository.DeleteAsync(id);
         return NoContent();
     }
+
 }
