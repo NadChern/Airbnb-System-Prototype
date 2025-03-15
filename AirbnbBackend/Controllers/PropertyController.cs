@@ -55,7 +55,7 @@ public class PropertyController : ControllerBase
 
     // Only host can create/update/delete properties
     // Create new property
-    
+    //[RequireLogin]
     [HttpPost]
     public async Task<ActionResult<Property>> CreateProperty(Property property)
     {
