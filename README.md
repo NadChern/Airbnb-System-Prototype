@@ -26,7 +26,7 @@ Step 2: Start Backend Server
 1. Open a terminal and navigate to the backend directory:
        cd backend
 2. Run the backend service:
-    dotnet build 
+    dotnet build ,
     dotnet run
 
  
@@ -34,7 +34,7 @@ Step 3: Start Frontend (Blazor) Application
 1. Open another terminal and navigate to the frontend directory:
     cd frontend
 2. Run the Blazor frontend application:
-    dotnet build
+    dotnet build,
     dotnet run
 3. Click on the link for the localhost to open the project
  
