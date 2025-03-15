@@ -3,12 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Airbnb_frontpages</title>
+    <title>@ViewData["Title"] - Airbnb</title>
+
+    <!-- ✅ Ensure correct static file references -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Airbnb_frontpages.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Airbnb_frontpages.styles.css" asp-append-version="true" />
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- External CDN (Backup) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- jQuery & Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
@@ -16,7 +24,6 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
             <div class="container">
-                <!-- Airbnb brand linking to Index page -->
                 <a class="navbar-brand" href="/Index">Airbnb</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -28,19 +35,17 @@
                             <a class="nav-link text-dark" href="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="#">Become a Host</a>
+                            <a class="nav-link text-dark" href="/HostProperty">Become a Host</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="#">Help</a>
                         </li>
-                        <!-- Profile Icon -->
                         <li class="nav-item">
                             <a class="nav-link" href="/Profile">
                                 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                                      alt="Profile" width="30" height="30" style="border-radius: 50%;">
                             </a>
                         </li>
-
                     </ul>
                 </div>
             </div>
@@ -59,10 +64,27 @@
         </div>
     </footer>
 
+    <!-- ✅ Ensure static files are loaded correctly -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    @using Microsoft.AspNetCore.Http
+    @inject IHttpContextAccessor HttpContextAccessor
+
+    @{
+    // ✅ Fake a login by always setting Kinna Sayton as the logged-in user
+    if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext?.Session.GetString("UserId")))
+    {
+        HttpContextAccessor.HttpContext?.Session.SetString("UserId", "e8e20f27-465f-491e-8c8f-3fd548ea9c14"); // Hardcoded User ID
+        HttpContextAccessor.HttpContext?.Session.SetString("UserRole", "Host"); // Set role to Host
+        HttpContextAccessor.HttpContext?.Session.SetString("UserEmail", "hsayton1@elpais.com");
+        HttpContextAccessor.HttpContext?.Session.SetString("UserName", "Kinna Sayton");
+    }
+    }
+
+
 </body>
 </html>

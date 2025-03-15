@@ -55,11 +55,11 @@ public class PropertyController : ControllerBase
 
     // Only host can create/update/delete properties
     // Create new property
-    [RequireLogin]
+    //[RequireLogin]
     [HttpPost]
     public async Task<ActionResult<Property>> CreateProperty(Property property)
     {
-        var loggedInUserId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+        var loggedInUserId = Guid.Parse(property.Owner.ToString());
         var loggedInUserRole = await _userRepository.GetUserRoleAsync(loggedInUserId);
 
         if (loggedInUserRole != UserRole.Host)
