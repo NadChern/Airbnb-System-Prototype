@@ -67,14 +67,15 @@ namespace Airbnb_frontpages.Pages
         }
 
         // Handler for canceling a booking.
-        public async Task<IActionResult> OnPostCancelAsync(Guid bookingId)
+        // Now accepts both the property id and bookingId from the form.
+        public async Task<IActionResult> OnPostCancelAsync(Guid id, Guid bookingId)
         {
             var request = new HttpRequestMessage(HttpMethod.Put, $"http://localhost:5013/api/bookings/{bookingId}/cancel");
             // Pass the dummy guest ID via cookie header.
             request.Headers.Add("Cookie", "UserId=e8e20f27-465f-491e-8c8f-3fd548ea9c14");
             await _httpClient.SendAsync(request);
             // Reload the detail page with the property id preserved.
-            return RedirectToPage(new { id = this.id });
+            return RedirectToPage(new { id = id });
         }
 
         // Handler for deleting the property.
