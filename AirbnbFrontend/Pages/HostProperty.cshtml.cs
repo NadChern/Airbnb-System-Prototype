@@ -6,103 +6,84 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using Airbnb_frontpages.Models; // Make sure this using is here
 
 namespace AirbnbFrontend.Pages
 {
-	public class HostPropertyModel : PageModel
-	{
-		[BindProperty] public string Title { get; set; }
-		[BindProperty] public string About { get; set; }
-		[BindProperty] public string StreetAddress { get; set; }
-		[BindProperty] public string City { get; set; }
-		[BindProperty] public string State { get; set; }
-		[BindProperty] public string ZipCode { get; set; }
-		[BindProperty] public int Bedrooms { get; set; }
-		[BindProperty] public decimal Bathrooms { get; set; }
-		[BindProperty] public int SquareFeet { get; set; }
-		[BindProperty] public int PricePerNight { get; set; }
-		public string Message { get; set; }
+    public class HostPropertyModel : PageModel
+    {
+        // Bind the entire DTO from the form
+        [BindProperty]
+        public CreatePropertyDto HostProperty { get; set; }
 
-		private readonly HttpClient _httpClient;
-		private readonly IHttpContextAccessor _httpContextAccessor;
+        public string Message { get; set; }
 
-		public HostPropertyModel(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
-		{
-			_httpClient = httpClient;
-			_httpContextAccessor = httpContextAccessor;
-		}
+        private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-		public async Task<IActionResult> OnPostAsync()
-		{
-			// ✅ Hardcoded UserId (Ensure it's a valid GUID string)
-			var userId = "e8e20f27-465f-491e-8c8f-3fd548ea9c14";
+        public HostPropertyModel(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        {
+            _httpClient = httpClient;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
-			if (!Guid.TryParse(userId, out var parsedUserId))
-			{
-				Message = "❌ Error: UserId is not a valid GUID!";
-				return Page();
-			}
+        public async Task<IActionResult> OnPostAsync()
+        {
+            // ✅ Hardcoded UserId (ensure it's a valid GUID string)
+            var userId = "e8e20f27-465f-491e-8c8f-3fd548ea9c14";
 
-			Console.WriteLine($"📢 Sending UserId: {userId}");
+            if (!Guid.TryParse(userId, out var parsedUserId))
+            {
+                Message = "❌ Error: UserId is not a valid GUID!";
+                return Page();
+            }
 
-			
-			var newProperty = new
-			{
-				Owner = parsedUserId,  
-				Title = Title,
-				About = About,
-				StreetAddress = StreetAddress,
-				City = City,
-				State = State,
-				ZipCode = ZipCode,
-				Bedrooms = Bedrooms,
-				Bathrooms = Bathrooms,
-				SquareFeet = SquareFeet,
-				PricePerNight = PricePerNight,
-				Photos = new string[] { }
-			};
+            Console.WriteLine($"📢 Sending UserId: {userId}");
 
-			var jsonContent = JsonConvert.SerializeObject(newProperty);
-			Console.WriteLine($"📢 Request Payload: {jsonContent}"); // ✅ Print JSON request before sending
+            // Set the Owner property on the DTO
+            HostProperty.Owner = parsedUserId;
 
-			var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            // Serialize the DTO to JSON
+            var jsonContent = JsonConvert.SerializeObject(HostProperty);
+            Console.WriteLine($"📢 Request Payload: {jsonContent}");
 
-			try
-			{
-				var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5013/api/properties")
-				{
-					Content = stringContent
-				};
+            var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-				
-				request.Headers.Add("Cookie", $"UserId={userId}");
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5013/api/properties")
+                {
+                    Content = stringContent
+                };
 
-				
-				var response = await _httpClient.SendAsync(request);
+                // Optionally, add the UserId cookie if needed by the backend
+                request.Headers.Add("Cookie", $"UserId={userId}");
 
-				if (response.IsSuccessStatusCode)
-				{
-					Message = "🎉 Property added successfully!";
-				}
-				else
-				{
-					var errorResponse = await response.Content.ReadAsStringAsync();
-					Message = $"❌ Error adding property! Server response: {response.StatusCode} - {errorResponse}";
-					Console.WriteLine($"⚠️ API Response: {errorResponse}");
-				}
-			}
-			catch (HttpRequestException httpEx)
-			{
-				Message = $"❌ Network Error: {httpEx.Message}";
-				Console.WriteLine($"⚠️ Network Error: {httpEx.Message}");
-			}
-			catch (Exception ex)
-			{
-				Message = $"❌ Unexpected Error: {ex.Message}";
-				Console.WriteLine($"⚠️ Unexpected Error: {ex}");
-			}
+                var response = await _httpClient.SendAsync(request);
 
-			return Page();
-		}
-	}
+                if (response.IsSuccessStatusCode)
+                {
+                    Message = "🎉 Property added successfully!";
+                }
+                else
+                {
+                    var errorResponse = await response.Content.ReadAsStringAsync();
+                    Message = $"❌ Error adding property! Server response: {response.StatusCode} - {errorResponse}";
+                    Console.WriteLine($"⚠️ API Response: {errorResponse}");
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Message = $"❌ Network Error: {httpEx.Message}";
+                Console.WriteLine($"⚠️ Network Error: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Message = $"❌ Unexpected Error: {ex.Message}";
+                Console.WriteLine($"⚠️ Unexpected Error: {ex}");
+            }
+
+            return Page();
+        }
+    }
 }
