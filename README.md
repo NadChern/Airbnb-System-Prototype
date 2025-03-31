@@ -1,7 +1,7 @@
 # Airbnb-System-Prototype
 
 Overview
-This is a full-stack Airbnb project featuring authentication, role-based access control, and API endpoints implemented in the `rest` branch. The backend is built with .NET (C# Blazor), and the frontend is a Blazor-based application. The project uses PostgreSQL as the database and is containerized using Docker Compose.
+This is a full-stack Airbnb project featuring authentication, role-based access control, and API endpoints implemented in the `rest` branch. The backend is built with .NET (C#), and the frontend is a Razor-based application. The project uses PostgreSQL as the database and is containerized using Docker Compose.
  
 Prerequisites
 Before running the project, ensure you have the following installed:
@@ -30,7 +30,7 @@ Step 2: Start Backend Server
     dotnet run
 
  
-Step 3: Start Frontend (Blazor) Application
+Step 3: Start Frontend Application
 1. Open another terminal and navigate to the frontend directory:
     cd frontend
 2. Run the Blazor frontend application:
