@@ -1,8 +1,16 @@
 # Airbnb-System-Prototype
 
-Overview
-This is a full-stack Airbnb project featuring authentication, role-based access control, and API endpoints implemented in the `rest` branch. The backend is built with .NET (C#), and the frontend is a Razor-based application. The project uses PostgreSQL as the database and is containerized using Docker Compose.
- 
+## Overview
+This is a **full-stack prototype** of an Airbnb-inspired system, developed as part of the *CPSC 5200 Software Architecture and Design* course. The project was built over a two-week sprint and demonstrates key architectural concepts such as:
+
+- RESTful API with **authentication** and **role-based access control** (`rest` branch)
+- Backend built using **.NET (C#)**
+- Frontend using **Razor Pages**
+- **PostgreSQL** as the database
+- Containerized with **Docker Compose**
+
+> ⚠️ *Note: This is a short-term prototype. Some features such as login-required property creation are not fully implemented due to time constraints.*
+
 Prerequisites
 Before running the project, ensure you have the following installed:
 - [.NET SDK](https://dotnet.microsoft.com/download)
