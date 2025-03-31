@@ -25,48 +25,43 @@ Ensure you have the following installed before running the project:
 
 ### Clone the Repository
 
-```bash
 git clone https://github.com/your-username/Airbnb-System-Prototype.git
 cd Airbnb-System-Prototype
  
-### Running the Project
- 
-Step 1: Open Docker and Start Containers
-Make sure Docker is running, then execute:
- 
-docker-compose up -d
- 
-This will start all required containers, including PostgreSQL.
- 
-Step 2: Start Backend Server
-1. Open a terminal and navigate to the backend directory:
-       cd backend
-2. Run the backend service:
-    dotnet build ,
-    dotnet run
+## Running the Project
 
- 
-Step 3: Start Frontend Application
+### Step 1: Open Docker and Start Containers
+Make sure Docker is running, then execute:
+
+docker-compose up -d
+
+This will start all required containers, including PostgreSQL.
+
+### Step 2: Start Backend Server
+1. Open a terminal and navigate to the backend directory:
+   cd backend
+2. Run the backend service:
+   dotnet build
+   dotnet run
+
+### Step 3: Start Frontend Application
 1. Open another terminal and navigate to the frontend directory:
-    cd frontend
-2. Run the Blazor frontend application:
-    dotnet build,
-    dotnet run
+   cd frontend
+2. Run the Razor frontend application:
+   dotnet build
+   dotnet run
 3. Click on the link for the localhost to open the project
- 
-Note: For the prototype, authentication such as required login to create property is not included while implementing due to time constraint.
- 
-API Documentation
+
+## API Documentation
 The API implementation is in the `rest` branch and includes:
 - Swagger documentation for easy API exploration
 - Role-based authentication and login requirement functionalities
- 
+
 To access Swagger UI:
- 
+
 http://localhost:5013/swagger/index.html
- 
- 
-Stopping the Services
+
+## Stopping the Services
 To stop all running containers:
- 
+
 docker-compose down
