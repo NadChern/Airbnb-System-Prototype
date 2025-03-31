@@ -9,19 +9,27 @@ This is a **full-stack prototype** of an Airbnb-inspired system, developed as pa
 - **PostgreSQL** as the database
 - Containerized with **Docker Compose**
 
-> ⚠️ *Note: This is a short-term prototype. Some features such as login-required property creation are not fully implemented due to time constraints.*
+> ⚠️ *Note: This is a short-term prototype. Some features such as enterprise-level user auth (via Entra ID) or advanced image storage (like Azure Blob Storage) are not implemented due to time constraints.*
 
-Prerequisites
-Before running the project, ensure you have the following installed:
+## Prerequisites
+
+Ensure you have the following installed before running the project:
+
 - [.NET SDK](https://dotnet.microsoft.com/download)
 - [Docker](https://www.docker.com/get-started)
-- [PostgreSQL](https://www.postgresql.org/download/) (if running the database locally instead of Docker)
+- [PostgreSQL](https://www.postgresql.org/download/) *(Only if not using Docker)*
+
+---
+
+## Getting Started
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/your-username/Airbnb-System-Prototype.git
+cd Airbnb-System-Prototype
  
-Getting Started
- 
-Clone the Repository
- 
-Running the Project
+### Running the Project
  
 Step 1: Open Docker and Start Containers
 Make sure Docker is running, then execute:
